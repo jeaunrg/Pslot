@@ -1,0 +1,83 @@
+# Pour ajouter des conditions, respectez la tabulation utilisÃ©e, les majuscules/minuscules
+# Pour ajouter des commentaires, ajoutez le symbole '#' devant chaque ligne de commentaire
+# Ã©vitez les caractÃ¨re spÃ©ciaux
+# les conditions sont specifies dans le profil de chaque candidats (candidats.json)
+# exemple : {'cond1': 'oui', 'cond2': 'non'}
+# si la condition n'est pas specifiee, on la considere comme un 'non'
+
+
+
+#----------------------- conditions obligatoires------------------------------#
+if check("cond0"):
+    print('cond0')
+
+    # si on fait une demi-garde un jour, on ne peut pas Ãªtre sur un autre creneau de demi-garde le mÃªme jour
+    if work(day, 'DG'):
+        disable(day, 'DG')
+
+    # si on fait une astreinte un jour, on ne peut pas Ãªtre sur un autre creneau d'astreinte le mÃªme jour
+    if work(day, 'AT'):
+        disable(day, 'AT')
+
+    # si on fait une garde un jour, on ne peut pas Ãªtre sur un autre creneau de garde le mÃªme jour
+    if work(day, 'G'):
+        disable(day, 'G')
+
+
+
+#----------------------- conditions facultatives ------------------------------#
+# on ne peut pas enchainer 3 jours de gardes/demigardes/astreintes d'affilÃ©
+if check('cond1'):
+    print('cond1')
+    if work(day):
+        if work(day+1):
+            disable(day+2)
+            disable(day-1)
+        if work(day+2):
+            disable(day+1)
+        if work(day-1):
+            disable(day-2)
+            disable(day+1)
+        if work(day-2):
+            disable(day-1)
+
+
+# si on est de garde une nuit on ne peut pas faire de demi-garde le lendemain
+# (valable uniquement pour les candidats acceptant la condition cond2)
+if check('cond2'):
+    print('cond2')
+    if work(day, 'G'):
+        disable(day+1, 'DG')
+    if work(day, 'DG'):
+        disable(day-1, 'G')
+
+# si on est de garde une nuit on ne peut pas faire d'astreinte le lendemain
+if check('cond3'):
+    print('cond3')
+    if work(day, 'G'):
+        disable(day+1, 'AT')
+    if work(day, 'AT'):
+        disable(day-1, 'G')
+
+# on ne peut pas faire 2 gardes/demigardes/astreintes le mÃªme jour
+if check('cond4'):
+    print('cond4')
+    if work(day):
+        disable(day)
+
+# si on n'est pas de garde vendredi, on n'est pas de garde dimanche
+# if check('cond5'):
+print('cond5')
+if notWork(day, 'G', v=True) and name(day)=='Vendredi':
+    disable(day+2, 'G', v=True)
+if notWork(day, 'G', v=True) and name(day)=='Dimanche':
+    disable(day-2, 'G', v=True)
+
+
+# si on est de garde vendredi, on est de garde dimanche
+print('cond6')
+# if check('cond6'):
+if work(day, 'G', 'Vendredi', v=True):
+    forceWork(day+2, 'G')
+if work(day, 'G', 'Dimanche', v=True):
+    forceWork(day-2, 'G')

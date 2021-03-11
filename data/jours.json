@@ -1,0 +1,185 @@
+
+
+{
+
+    "J1": {
+        "name": "Jeudi 1 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J2": {
+        "name": "Vendredi 2 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J3": {
+        "name": "Samedi 3 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J4": {
+        "name": "Dimanche 4 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J5": {
+        "name": "Lundi 5 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J6": {
+        "name": "Mardi 6 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J7": {
+        "name": "Mercredi 7 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J8": {
+        "name": "Jeudi 8 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J9": {
+        "name": "Vendredi 9 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J10": {
+        "name": "Samedi 10 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J11": {
+        "name": "Dimanche 11 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J12": {
+        "name": "Lundi 12 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J13": {
+        "name": "Mardi 13 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J14": {
+        "name": "Mercredi 14 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J15": {
+        "name": "Jeudi 15 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J16": {
+        "name": "Vendredi 16 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J17": {
+        "name": "Samedi 17 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J18": {
+        "name": "Dimanche 18 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J19": {
+        "name": "Lundi 19 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J20": {
+        "name": "Mardi 20 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J21": {
+        "name": "Mercredi 21 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J22": {
+        "name": "Jeudi 22 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J23": {
+        "name": "Vendredi 23 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J24": {
+        "name": "Samedi 24 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J25": {
+        "name": "Dimanche 25 Avril 2021",
+        "ferie": "oui",
+        "creneaux": [ "AT", "G" ]
+    },
+
+    "J26": {
+        "name": "Lundi 26 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J27": {
+        "name": "Mardi 27 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J28": {
+        "name": "Mercredi 28 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J29": {
+        "name": "Jeudi 29 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    },
+
+    "J30": {
+        "name": "Vendredi 30 Avril 2021",
+        "ferie": "non",
+        "creneaux": [ "DG", "G" ]
+    }
+
+}

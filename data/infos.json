@@ -1,0 +1,14 @@
+
+
+
+
+
+
+{
+        "Creneaux": {
+		"G":  [ "G1", "G2", "G3", "Task Force" ],
+		"DG": [ "SSPI", "B1", "B2", "B3", "B4" ],
+		"AT": [ "REA", "SSPI/Bloc" ]
+	}
+}
+
