@@ -17,7 +17,7 @@
     "J3": {
         "name": "Samedi 3 Avril 2021",
         "ferie": "oui",
-        "creneaux": [ "AT", "G" ]
+        "creneaux": [ "AT", "G", "DG:SSPI:B1"]
     },
 
     "J4": {

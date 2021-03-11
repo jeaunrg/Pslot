@@ -52,7 +52,7 @@ class Day:
     def computeDayslots(self):
         for slot in self.slots:
             dayslot = Dayslot(self, slot)
-            self.dayslots[slot.name] = dayslot
+            self.dayslots[dayslot.slot.name] = dayslot
             self.blocslots += dayslot.blocslots
 
 
@@ -63,16 +63,17 @@ class Dayslot:
     """
     def __init__(self, day, slot):
         self.day = day
-        self.slot = slot
-        self.index = " - ".join([day.index, slot.name])
+        if isinstance(slot, Slot):
+            self.slot = slot
+            blocs = self.slot.blocs
+        else:
+            self.slot = slot[0]
+            blocs = slot[1:]
+        self.index = " - ".join([day.index, self.slot.name])
         self.blocslots = []
-        self.computeBlocslots()
-    def computeBlocslots(self):
-        """
-        create blocslots for this dayslot
-        """
-        for bloc in self.slot.blocs:
+        for bloc in blocs:
             self.blocslots.append(Blocslots(self, bloc))
+
 
 class Blocslots:
     """
@@ -157,7 +158,13 @@ class Schedule:
     def addDays(self, day_params):
         prev_day_id = None
         for day_id, day_param in day_params.items():
-            slots = [self.slots[sn] for sn in day_param["creneaux"]]
+            slots = []
+            for sn in day_param["creneaux"]:
+                if len(sn.split(':'))>1:
+                    ns = sn.split(':')
+                    slots.append([self.slots[ns[0]], *[self.blocs[n] for n in ns[1:]]])
+                else:
+                    slots.append(self.slots[sn])
             dayname = day_param["name"].split(" ")
             isHoliday = day_param["ferie"]
             day = Day(day_id, *dayname, isHoliday, slots)
