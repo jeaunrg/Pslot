@@ -257,3 +257,23 @@ class Candidate:
                 self.force(getBlocslots(2, 'G'))
             elif day.name == "Dimanche" and slot.name == "G":
                 self.force(getBlocslots(-2, 'G'))
+
+        # si on est d'astreinte un weekend on ne peut pas l'etre le weekend d'apres
+        if self.getCondition('cond6'):
+            if day.name == 'Samedi' and slot.name == 'AT':
+                self.disable(getBlocslots(7, 'AT'))
+                self.disable(getBlocslots(8, 'AT'))
+                self.disable(getBlocslots(-6, 'AT'))
+                self.disable(getBlocslots(-7, 'AT'))
+            if day.name == 'Dimanche' and slot.name == 'AT':
+                self.disable(getBlocslots(6, 'AT'))
+                self.disable(getBlocslots(7, 'AT'))
+                self.disable(getBlocslots(-7, 'AT'))
+                self.disable(getBlocslots(-8, 'AT'))
+
+        # si on est d'astreinte un jour on est d'astreinte tout le weekend
+        if self.getCondition('cond7'):
+            if day.name == 'Samedi' and slot.name == 'AT':
+                self.force(getBlocslots(1, 'AT'))
+            if day.name == 'Dimanche' and slot.name == 'AT':
+                self.force(getBlocslots(-1, 'AT'))
