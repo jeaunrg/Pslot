@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     # fit schedule
     print(n)
-    sort_slots_by = [("slot", "G"), ("slot","AT"), ("slot", "DG"), "n candidates", "random"]
+    sort_slots_by = [("weekend", 'oui'), ("slot", "G"), ("slot","AT"), ("slot", "DG"), "n candidates", "random"]
     # sort_slots_by = ['day', ("slot", "G"), ("slot", "DG"), ("slot","AT")]
     schedule.fit(save=datapath, ntimes=int(n), randomize_candidates=True,
                  sort_slots_by=sort_slots_by)

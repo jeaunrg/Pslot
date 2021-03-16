@@ -327,6 +327,10 @@ class Schedule:
                     df_blocslots[bs]['n candidates'] = bs.ncandidates
                     df_blocslots[bs]['slot'] = bs.dayslot.slot.name
                     df_blocslots[bs]['day'] = bs.dayslot.day.num
+                    # on considere les vendredi et les lundi feries comme des jours de weekend
+                    df_blocslots[bs]['weekend'] = bs.dayslot.day.isHoliday
+                    if bs.dayslot.day.name=='Vendredi':
+                        df_blocslots[bs]['weekend'] = 'oui'
                 df_blocslots = pd.DataFrame.from_dict(df_blocslots).T
 
                 sort_by = copy.copy(sort_slots_by)
