@@ -209,14 +209,14 @@ class Candidate:
         # si on fait une DG/AT/G un jour, on ne peut pas etre sur un autre creneau de DG/AT/G le meme jour
         if self.getCondition('cond0'):
             if slot.name == "DG":
-                self.disable(getBlocslots(slotname="DG"))
-                self.disable(getBlocslots(slotname="G"))
+                self.disable(getBlocslots(0, "DG"))
+                self.disable(getBlocslots(0, "G"))
                 self.disable(getBlocslots(-1, "G"))
             elif slot.name == "AT":
-                self.disable(getBlocslots(slotname="AT"))
+                self.disable(getBlocslots(0, "AT"))
             elif slot.name == "G":
-                self.disable(getBlocslots(slotname="G"))
-                self.disable(getBlocslots(slotname="DG"))
+                self.disable(getBlocslots(0, "G"))
+                self.disable(getBlocslots(0, "DG"))
                 self.disable(getBlocslots(1, "DG"))
 
         #----------------------- conditions facultatives ------------------------------#
@@ -259,21 +259,38 @@ class Candidate:
                 self.force(getBlocslots(-2, 'G'))
 
         # si on est d'astreinte un weekend on ne peut pas l'etre le weekend d'apres
+        # prend en compte les weekend prolonges
         if self.getCondition('cond6'):
+            # weekend
             if day.name == 'Samedi' and slot.name == 'AT':
-                self.disable(getBlocslots(7, 'AT'))
-                self.disable(getBlocslots(8, 'AT'))
-                self.disable(getBlocslots(-6, 'AT'))
-                self.disable(getBlocslots(-7, 'AT'))
-            if day.name == 'Dimanche' and slot.name == 'AT':
-                self.disable(getBlocslots(6, 'AT'))
-                self.disable(getBlocslots(7, 'AT'))
-                self.disable(getBlocslots(-7, 'AT'))
-                self.disable(getBlocslots(-8, 'AT'))
+                for i in [-8, -7, -6, -5, 6, 7, 8, 9]: #
+                    self.disable(getBlocslots(i, 'AT'))
+            elif day.name == 'Dimanche' and slot.name == 'AT':
+                for i in [-9, -8, -7, -6, 5, 6, 7, 8]: #
+                    self.disable(getBlocslots(i, 'AT'))
+            # et jours feries...
+            elif day.name == 'Vendredi' and slot.name == 'AT':
+                for i in [-7, -6, -5, -4, 7, 8, 9, 10]: #
+                    self.disable(getBlocslots(i, 'AT'))
+            elif day.name == 'Lundi' and slot.name == 'AT':
+                for i in [-10, -9, -8, -7, 4, 5, 6, 7]: #
+                    self.disable(getBlocslots(i, 'AT'))
+
 
         # si on est d'astreinte un jour on est d'astreinte tout le weekend
+        # prend en compte les weekend prolonges
         if self.getCondition('cond7'):
+            # weekend
             if day.name == 'Samedi' and slot.name == 'AT':
-                self.force(getBlocslots(1, 'AT'))
+                for i in [-1, 1, 2]:
+                    self.force(getBlocslots(i, 'AT'))
             if day.name == 'Dimanche' and slot.name == 'AT':
-                self.force(getBlocslots(-1, 'AT'))
+                for i in [-2, -1, 1]:
+                    self.force(getBlocslots(i, 'AT'))
+            # et jours feries
+            if day.name == 'Vendredi' and slot.name == 'AT':
+                for i in [1, 2, 3]:
+                    self.force(getBlocslots(i, 'AT'))
+            if day.name == 'Lundi' and slot.name == 'AT':
+                for i in [-3, -2, -1]:
+                    self.force(getBlocslots(i, 'AT'))
