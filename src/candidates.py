@@ -62,7 +62,6 @@ class Candidate:
             self.penalities[blocslot] = n
 
     def disable(self, blocslots, n=1):
-
         if not isinstance(blocslots, list):
             blocslots = [blocslots]
         for blocslot in blocslots:
@@ -154,25 +153,6 @@ class Candidate:
         if name not in self.conditions.keys():
             self.conditions[name] = False
         return self.conditions[name]
-
-    def getBlocslots(self, day, delta=0, slot=None):
-        day = self.getDay(day, delta)
-        if day is None:
-            return None
-        if slot is None:
-            return day.blocslots
-        else:
-            return day.dayslots[slot].blocslots
-
-    def getDay(self, day, delta=1):
-        for _ in range(np.abs(delta)):
-            if delta < 0:
-                day = day.previous
-            else:
-                day = day.next
-            if day is None:
-                return
-        return day
 
     def updateBlocslotPenalities(self, blocslot):
         self.updatePenalities()
@@ -281,16 +261,17 @@ class Candidate:
         # prend en compte les weekend prolonges
         if self.getCondition('cond7'):
             # weekend
-            if day.name == 'Samedi' and slot.name == 'AT':
-                for i in [-1, 1, 2]:
-                    self.force(getBlocslots(i, 'AT'))
-            if day.name == 'Dimanche' and slot.name == 'AT':
-                for i in [-2, -1, 1]:
-                    self.force(getBlocslots(i, 'AT'))
-            # et jours feries
-            if day.name == 'Vendredi' and slot.name == 'AT':
-                for i in [1, 2, 3]:
-                    self.force(getBlocslots(i, 'AT'))
-            if day.name == 'Lundi' and slot.name == 'AT':
-                for i in [-3, -2, -1]:
-                    self.force(getBlocslots(i, 'AT'))
+            if slot.name == 'AT':
+                if day.name == 'Samedi':
+                    for i in [-1, 1, 2]:
+                        self.force(getBlocslots(i, 'AT'))
+                if day.name == 'Dimanche':
+                    for i in [-2, -1, 1]:
+                        self.force(getBlocslots(i, 'AT'))
+                # et jours feries
+                if day.name == 'Vendredi':
+                    for i in [1, 2, 3]:
+                        self.force(getBlocslots(i, 'AT'))
+                if day.name == 'Lundi':
+                    for i in [-3, -2, -1]:
+                        self.force(getBlocslots(i, 'AT'))
