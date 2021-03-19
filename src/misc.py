@@ -2,6 +2,12 @@ import datetime
 from src import DAYS, MONTHS, CANDIDATES
 import json
 import random
+import sys
+
+def vprint(*args, **kwargs):
+    verbose = '-v' in sys.argv
+    if verbose:
+        print(*args, **kwargs)
 
 def generateDays(ndays=30, start=0, save=None):
 	days = {}

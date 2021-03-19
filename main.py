@@ -31,7 +31,6 @@ if __name__ == "__main__":
     schedule.loadInfos(os.path.join(datapath, "infos.json"))
     schedule.loadDays(os.path.join(datapath, "jours.json"))
     schedule.loadCandidates(os.path.join(datapath, "candidates.json"))
-    schedule.loadConditions(os.path.join(datapath, 'conditions.txt'))
 
     # fit schedule
     print(n)

@@ -9,6 +9,7 @@ import matplotlib.patches as mpatches
 import pdb
 import copy
 import os
+from src.misc import vprint
 
 class Bloc:
     """
@@ -133,9 +134,6 @@ class Schedule:
         with open(path) as f:
             data = json.load(f)
         self.addCandidates(data)
-    def loadConditions(self, path):
-        with open(path, 'r') as f:
-            self.custom_conditions = f.read()
 
     # set parameters
     def addBlocs(self, bloc_names):
@@ -326,7 +324,7 @@ class Schedule:
                     df_blocslots[bs]['random'] = random.random()
                     df_blocslots[bs]['n candidates'] = bs.ncandidates
                     df_blocslots[bs]['slot'] = bs.dayslot.slot.name
-                    df_blocslots[bs]['day'] = bs.dayslot.day.num
+                    df_blocslots[bs]['day'] = int(bs.dayslot.day.num)
                     # on considere les vendredi et les lundi feries comme des jours de weekend
                     df_blocslots[bs]['weekend'] = bs.dayslot.day.isHoliday
                     if bs.dayslot.day.name=='Vendredi':
@@ -347,88 +345,29 @@ class Schedule:
 
             # set candidate for each blocslot
             for blocslot in blocslots:
+                vprint("\n"+blocslot.index)
+
                 # get candidates for this blocslot, sorted on their score
                 candidates = blocslot.sortCandidates(randomize=randomize_candidates)
                 if len(candidates) == 0:
                     continue
                 best_candidate = candidates[0]
-                if -1 in best_candidate.scores[blocslot]:
+                score = best_candidate.score[blocslot]
+                if score['block']==0 or score['cond']==0 or score['max']==0 or score['wish']==-1:
                     continue
                 # best candidate as final candidate
+                vprint("\tset best candidate "+best_candidate.initiales)
                 blocslot.setFinalCandidate(best_candidate)
 
             # save schedule csv files
             if save is not None:
                 schedule, unc, nerr = self.buildDataframes()
                 nerrors = "{0:03d}-{1:03d}".format(nerr, unc.shape[0])
-                schedule.to_csv(os.path.join(save, "out", "{0}_{1:03d}_output.csv".format(nerrors, n+1)), sep='\t', decimal=",", encoding="latin-1")
-                unc.to_csv(os.path.join(save, "out", "{0}_{1:03d}_errors.csv".format(nerrors, n+1)), sep='\t', decimal=",", encoding="latin-1")
+                schedule.to_csv(os.path.join(save, "out", "{0}_{1:03d}_output.csv".format(nerrors, n+1)), sep='\t', decimal=",", encoding="utf-16")
+                unc.to_csv(os.path.join(save, "out", "{0}_{1:03d}_errors.csv".format(nerrors, n+1)), sep='\t', decimal=",", encoding="utf-16")
             n += 1
         # send signal of process end
         filename = os.path.join(save, "adv.txt")
         fp = open(filename, "w")
         fp.write("end")
         fp.close()
-
-    #-------------------------------- DESIGN ----------------------------------#
-    def plot(self, ax=None, save=None):
-        """
-        plot schedule
-        """
-        if self.dataframe is None:
-            self.buildDataframes()
-
-        if ax is None:
-            fig = plt.figure(figsize=(15, 8))
-            ax = fig.add_subplot(111)
-
-        horizontal_errors = [" ".join([c.statut, c.firstname, c.lastname]) for c in self.candidates.values() if not c.isObjectiveMet()]
-        df = pd.DataFrame(index=[" ".join([c.statut, c.firstname, c.lastname]) for c in self.candidates.values()])
-
-        labels = {'G1': 240, 'G2': 220, 'G3': 200, 'Task Force': 180,
-                  'REA': 150, 'SSPI/Bloc': 110,
-                  'SSPI': 70, 'B1': 50, 'B2': 30, 'B3': 15, 'B4': 0}
-        vertical_errors = []
-        for index in self.dataframe.index:
-            cand = " ".join(self.dataframe.loc[index].values[1:])
-            day = " ".join(index[1:-1])
-            if cand == "- - -":
-                vertical_errors.append(day)
-            else:
-                lab = index[-1]
-                df.loc[cand, day] = labels[lab]
-
-        df = df.fillna(-1)
-        df = df.sort_values(by=list(df.columns), axis=0)
-
-        # plot points and error lines
-        im = ax.imshow(df.values, aspect='auto', cmap='nipy_spectral', vmin=-0.5, vmax=256, zorder=1)
-        im.cmap.set_under(alpha=0)
-        for i, col in enumerate(df.columns):
-            if col in vertical_errors:
-                ax.axvline(i, color='r', lw=2, zorder=0, alpha=0.2)
-            ax.axvline(i+0.5, color='gray', lw=0.5, zorder=0, alpha=0.2)
-
-        for i, ind in enumerate(df.index):
-            if ind in horizontal_errors:
-                ax.axhline(i, color='r', lw=2, zorder=0, alpha=0.2)
-            ax.axhline(i+0.5, color='gray', lw=0.5, zorder=0, alpha=0.2)
-
-
-        colnames = df.columns
-        indnames = df.index
-        ax.set_yticks(range(len(indnames)))
-        ax.set_yticklabels(indnames)
-        ax.set_xticks(range(len(colnames)))
-        cs = []
-        for c in colnames:
-            if c.endswith(' G'):
-                cs.append('G')
-            else:
-                cs.append(c)
-        ax.set_xticklabels(cs, rotation=90)
-        patches = [mpatches.Patch(color=im.cmap(j), label=i) for i, j in labels.items()]
-        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc='upper left')
-        # plt.colorbar(im)
-        plt.tight_layout()
-        plt.show()
