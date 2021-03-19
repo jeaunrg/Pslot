@@ -186,7 +186,7 @@ class Candidate:
             return d
 
 
-        #----------------------- conditions obligatoires-----------------------#
+        #----------------------- contrinates obligatoires----------------------#
         # si on fait une DG/AT/G un jour, on ne peut pas etre sur un autre creneau de DG/AT/G au meme moment
         # a moins de savoir se teleporter
         if slot.name == 'AT':
@@ -196,7 +196,7 @@ class Candidate:
         elif slot.name == 'G':
             self.block(getBlocslots(0, 'G'))
 
-        #----------------------- conditions d'interdiction --------------------#
+        #----------------------- contraintes d'exclusion ----------------------#
         # on ne peut pas etre de demi-garde et de garde le meme jour
         if self.getCondition('cond0'):
             if slot.name == "DG":
@@ -259,7 +259,7 @@ class Candidate:
                     self.disable(getBlocslots(i, 'AT'))
 
 
-        #----------------------- conditions d'oblidation ----------------------#
+        #----------------------- contraintes d'inclusion  ---------------------#
         # si on est d'astreinte un jour on est d'astreinte tout le weekend
         # prend en compte les weekend prolonges
         if self.getCondition('cond7'):
