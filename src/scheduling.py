@@ -284,13 +284,16 @@ class Schedule:
         return extra_supply, extra_demand
 
 
-    def fit(self, randomize_candidates=True, save=None, ntimes=1, sort_slots_by=[], ascending=[]):
+    def fit(self, randomize_candidates=True, save=None, ntimes=1, sort_slots_by=[], ascending=[], ignore_max_count=False, ignore_resents=False):
         """
         fit n times candidates desiderata to schedule,
         with a random parameter for each fit and save results to csv file
+
         Args
         randomize_candidates: boolean: randomize candidate selection when scores are equal
         sort_slots_by: list of (tuple or str): sort blocslots in this order
+        ignore_max_count:   boolean:    if no one can fill a slot, ignore the best candidate max count
+        ignore_resents:   boolean:    if no one can fill a slot, ignore the best candidate resents
         """
         n = 0
         while n != ntimes:
@@ -345,16 +348,20 @@ class Schedule:
 
             # set candidate for each blocslot
             for blocslot in blocslots:
+                candidates = blocslot.sortCandidates(randomize=randomize_candidates)
+
                 vprint("\n"+blocslot.index)
 
                 # get candidates for this blocslot, sorted on their score
-                candidates = blocslot.sortCandidates(randomize=randomize_candidates)
                 if len(candidates) == 0:
                     continue
                 best_candidate = candidates[0]
                 score = best_candidate.score[blocslot]
-                if score['block']==0 or score['cond']==0 or score['max']==0 or score['wish']==-1:
+                if score['block']==0 or score['cond']==0\
+                        or (not ignore_max_count and score['max']==0)\
+                        or (not ignore_resents and score['wish']==-1):
                     continue
+
                 # best candidate as final candidate
                 vprint("\tset best candidate "+best_candidate.initiales)
                 blocslot.setFinalCandidate(best_candidate)

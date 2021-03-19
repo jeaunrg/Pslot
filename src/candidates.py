@@ -35,6 +35,8 @@ class Candidate:
 
     def reset(self):
         self.final_blocslots = []
+        for blocslot in self.blocslots:
+            self.initScore(blocslot)
 
     def setDesiderata(self, wishes=[], resents=[]):
         try:
@@ -52,6 +54,9 @@ class Candidate:
 
     def addBlocslot(self, blocslot):
         self.blocslots.append(blocslot)
+        self.initScore(blocslot)
+
+    def initScore(self, blocslot):
         wish = 0
         if blocslot.dayslot in self.wishes:
             wish = 1
@@ -186,7 +191,7 @@ class Candidate:
             return d
 
 
-        #----------------------- contrinates obligatoires----------------------#
+        #----------------------- contraintes obligatoires----------------------#
         # si on fait une DG/AT/G un jour, on ne peut pas etre sur un autre creneau de DG/AT/G au meme moment
         # a moins de savoir se teleporter
         if slot.name == 'AT':
